@@ -10,10 +10,13 @@ import runSequence from 'run-sequence';
 import source from 'vinyl-source-stream';
 import sourcemaps from 'gulp-sourcemaps';
 import watchify from 'watchify';
+import uglify from "gulp-uglify";
+
 
 // HTML
 import jade from 'gulp-jade';
 import gDATA from 'gulp-data';
+
 // Post CSS
 import postcss from 'gulp-postcss'; // Main Plugins
 import _vars from 'postcss-custom-properties';
@@ -38,10 +41,11 @@ const paths = {
   bundle: 'app.js',
   srcJSX: 'src/js/Index.js',
   srcCSS: 'src/css/style.css',
+  srcCSSAll: 'src/css/**/*.css',
   srcIMG: 'src/img/**',
   srcJADE: 'src/html/*.jade',
   partJADE: 'src/html/**/*.jade',
-  DATA: 'src/data/**/*.{js,json}',
+  DATA: 'asset/data/**/*.{js,json}',
   dist: 'dist',
   distJS: 'dist/js',
   distCSS: 'dist/css',
@@ -132,12 +136,28 @@ gulp.task('lint', () => {
   .pipe(eslint())
   .pipe(eslint.format());
 });
+
+
+gulp.task('copies', () => {
+  gulp.src([
+    './asset/data/**/*.*',
+    './asset/fonts/**/*.*',
+    './asset/img/**/*.*',
+    './asset/js/**/*.*'
+  ],{'base':'./asset'})
+  .pipe(gulp.dest('./dist/asset'));
+});
+
 // Watch
 gulp.task('watchTask', () => {
   gulp.watch(paths.srcCSS, ['styles']);
+  gulp.watch(paths.srcCSSAll, ['styles']);
   gulp.watch(paths.srcJSX, ['lint']);
   gulp.watch(paths.partJADE, ['html']);
+  gulp.watch(paths.srcJADE, ['html']);
 });
+
+
 
 // Cleaning
 gulp.task('clean', cb => {
@@ -145,5 +165,5 @@ gulp.task('clean', cb => {
 });
 
 gulp.task('default', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint','html'], cb);
+  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint','html','copies'], cb);
 });
