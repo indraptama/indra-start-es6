@@ -3,6 +3,7 @@
   "plugins": [
     ["css-in-js", {
       "vendorPrefixes": true,
+      "compressClassNames": true,
       "bundleFile": "dist/css/bundle.css"
     }]
   ]
