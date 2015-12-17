@@ -1,0 +1,25 @@
+/** @define Button; use strict */
+@import "suitcss-base";
+@import "suitcss-components-button";
+
+:root {
+  --button-primary-color: teal;
+}
+
+.Button {
+  background-color: red;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0.25rem;
+  padding: 1rem 1.5rem;
+  text-transform: uppercase;
+  vertical-align: baseline;
+}
+
+.Button--primary {
+  background-color: var(--button-primary-color);
+  color: rgba(#fff, 0.87);
+}

@@ -10,7 +10,7 @@ import runSequence from 'run-sequence';
 import source from 'vinyl-source-stream';
 import sourcemaps from 'gulp-sourcemaps';
 import watchify from 'watchify';
-import uglify from "gulp-uglify";
+import uglify from 'gulp-uglify';
 
 
 // HTML
@@ -36,20 +36,20 @@ import nested from 'postcss-nested';
 import resType from 'postcss-responsive-type';
 
 
-
 const paths = {
   bundle: 'app.js',
-  srcJSX: 'src/js/Index.js',
-  srcCSS: 'src/css/style.css',
-  srcCSSAll: 'src/css/**/*.css',
+  srcJSX: 'src/index.js',
+  srcCSS: 'src/style.css',
+  srcCSSAll: 'src/**/*.css',
   srcIMG: 'src/img/**',
   srcJADE: 'src/html/*.jade',
   partJADE: 'src/html/**/*.jade',
+  componentsJADE: 'src/components/**/*.jade',
   DATA: 'asset/data/**/*.{js,json}',
   dist: 'dist',
   distJS: 'dist/js',
   distCSS: 'dist/css',
-  distImg: 'dist/img'
+  distImg: 'dist/img',
 };
 
 // HTML TASK
@@ -58,18 +58,19 @@ gulp.task('html', () => {
   gulp.src(paths.srcJADE)
   .pipe(sourcemaps.init())
   .pipe(jade({
-    pretty: true
+    pretty: true,
   }))
   .on('error', notify.onError())
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(paths.dist))
-  .pipe(reload({stream: true}));
+  .pipe(reload({ stream: true }));
 });
 
 // CSS TASK
 const cssProcess = [
   cssImport,
   _vars,
+  bemLinter,
   cssMedia,
   inputStyle,
   extend,
@@ -80,8 +81,7 @@ const cssProcess = [
   cssFocus,
   autoprefixer,
   mqPacker,
-  bemLinter,
-  cssReport({clearMessages: true})
+  cssReport({ clearMessages: true }),
 ];
 gulp.task('styles', () => {
   gulp.src(paths.srcCSS)
@@ -90,28 +90,28 @@ gulp.task('styles', () => {
   .on('error', notify.onError())
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(paths.distCSS))
-  .pipe(reload({stream: true}));
+  .pipe(reload({ stream: true }));
 });
 
 // JS Task
 gulp.task('watchify', () => {
-  let bundler = watchify(browserify(paths.srcJSX, watchify.args));
+  const bundler = watchify(browserify(paths.srcJSX, watchify.args));
   function rebundle() {
     return bundler
       .bundle()
       .on('error', notify.onError())
       .pipe(source(paths.bundle))
       .pipe(gulp.dest(paths.distJS))
-      .pipe(reload({stream: true}));
+      .pipe(reload({ stream: true }));
   }
-  bundler.transform(babelify,{presets: ['es2015', 'react']})
+  bundler.transform(babelify, { presets: ['es2015', 'react'] })
   .on('update', rebundle);
   return rebundle();
 });
 
 gulp.task('browserify', () => {
   browserify(paths.srcJSX)
-  .transform(babelify,{presets: ['es2015', 'react']})
+  .transform(babelify, { presets: ['es2015', 'react'] })
   .bundle()
   .pipe(source(paths.bundle))
   .pipe(buffer())
@@ -125,8 +125,8 @@ gulp.task('browserify', () => {
 gulp.task('browserSync', () => {
   browserSync({
     server: {
-      baseDir: './dist'
-    }
+      baseDir: './dist',
+    },
   });
 });
 
@@ -143,8 +143,8 @@ gulp.task('copies', () => {
     './asset/data/**/*.*',
     './asset/fonts/**/*.*',
     './asset/img/**/*.*',
-    './asset/js/**/*.*'
-  ],{'base':'./asset'})
+    './asset/js/**/*.*',
+  ], { 'base': './asset' })
   .pipe(gulp.dest('./dist/asset'));
 });
 
@@ -155,8 +155,8 @@ gulp.task('watchTask', () => {
   gulp.watch(paths.srcJSX, ['lint']);
   gulp.watch(paths.partJADE, ['html']);
   gulp.watch(paths.srcJADE, ['html']);
+  gulp.watch(paths.componentsJADE, ['html']);
 });
-
 
 
 // Cleaning
@@ -165,5 +165,5 @@ gulp.task('clean', cb => {
 });
 
 gulp.task('default', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint','html','copies'], cb);
+  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'html', 'copies'], cb);
 });

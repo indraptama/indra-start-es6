@@ -19017,25 +19017,6 @@ module.exports = validateDOMNesting;
 module.exports = require('./lib/React');
 
 },{"./lib/React":53}],159:[function(require,module,exports){
-'use strict';
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _card = require('./components/card.jsx');
-
-var _card2 = _interopRequireDefault(_card);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_reactDom2.default.render(_react2.default.createElement(_card2.default, null), document.querySelector('#content'));
-
-},{"./components/card.jsx":160,"react":158,"react-dom":29}],160:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19048,22 +19029,42 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Card = function Card() {
+var Button = function Button() {
   return _react2.default.createElement(
     "div",
-    { className: style.Card },
+    null,
     _react2.default.createElement(
-      "h1",
-      null,
-      "this card created with react"
+      "button",
+      { className: "Button Button--primary" },
+      "Button"
+    ),
+    _react2.default.createElement(
+      "a",
+      { href: "/", className: "Button Button--primary" },
+      "link"
     )
   );
 };
 
-var style = {
-  Card: "_0"
-};
+exports.default = Button;
 
-exports.default = Card;
+},{"react":158}],160:[function(require,module,exports){
+'use strict';
 
-},{"react":158}]},{},[159]);
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _index = require('./components/button/index.jsx');
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_reactDom2.default.render(_react2.default.createElement(_index2.default, null), document.querySelector('#content'));
+
+},{"./components/button/index.jsx":159,"react":158,"react-dom":29}]},{},[160]);

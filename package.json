@@ -29,6 +29,8 @@
     "browserify": "^12.0.1",
     "css-mqpacker": "^4.0.0",
     "cssnano": "^3.4.0",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.1.1",
     "eslint-plugin-react": "^3.11.3",
     "gulp": "^3.9.0",
     "gulp-data": "^1.2.1",
