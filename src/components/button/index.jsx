@@ -1,12 +1,20 @@
 import React from 'react';
 
-const Button = () => {
+const Button = (props) => {
   return (
     <div>
-      <button className="Button Button--primary">Button</button>
-      <a href="/" className="Button Button--primary">link</a>
+      <button className="Button Button--primary">{ props.name }</button>
+      <a href="/" className="Button Button--primary">{ props.name }</a>
     </div>
   );
+};
+
+Button.propTypes = {
+  name: React.PropTypes.string,
+};
+
+Button.defaultProps = {
+  name: 'button',
 };
 
 export default Button;

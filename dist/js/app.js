@@ -19029,21 +19029,29 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Button = function Button() {
+var Button = function Button(props) {
   return _react2.default.createElement(
     "div",
     null,
     _react2.default.createElement(
       "button",
       { className: "Button Button--primary" },
-      "Button"
+      props.name
     ),
     _react2.default.createElement(
       "a",
       { href: "/", className: "Button Button--primary" },
-      "link"
+      props.name
     )
   );
+};
+
+Button.propTypes = {
+  name: _react2.default.PropTypes.string
+};
+
+Button.defaultProps = {
+  name: 'button'
 };
 
 exports.default = Button;
