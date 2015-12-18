@@ -155,6 +155,7 @@ gulp.task('copies', () => {
     './asset/fonts/**/*.*',
     './asset/img/**/*.*',
     './asset/js/**/*.*',
+    './asset/css/**/*.*',
   ], { 'base': './asset' })
   .pipe(gulp.dest('./dist/asset'));
 });

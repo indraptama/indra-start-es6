@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import Button from './components/button/index.jsx';
+import Card from './components/card.jsx';
 
-ReactDom.render(<Button />, document.querySelector('#content'));
+const test = {
+  name: 'hallo',
+};
+
+ReactDom.render(<Card name={test.name}/>, document.querySelector('#content'));

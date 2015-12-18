@@ -1,20 +1,40 @@
+// import React from 'react';
+//
+// const Button = (props) => {
+//   return (
+//     <div>
+//       <button className="Button Button--primary">{ props.name }</button>
+//     </div>
+//   );
+// };
+//
+// Button.propTypes = {
+//   name: React.PropTypes.string,
+// };
+//
+// Button.defaultProps = {
+//   name: 'button',
+// };
+//
+// export default Button;
+
 import React from 'react';
 
-const Button = (props) => {
-  return (
-    <div>
-      <button className="Button Button--primary">{ props.name }</button>
-      <a href="/" className="Button Button--primary">{ props.name }</a>
-    </div>
-  );
+const propTypes = {
+  name: React.PropTypes.sting,
 };
 
-Button.propTypes = {
-  name: React.PropTypes.string,
+const defaultProps = {
+  name: 'indra',
 };
 
-Button.defaultProps = {
-  name: 'button',
-};
+export default class Button extends React.Component {
+  render() {
+    return (
+      <button className="Button Button--primary">{this.props.name}</button>
+    );
+  }
+}
 
-export default Button;
+Button.propTypes = propTypes;
+Button.defaultProps = defaultProps;

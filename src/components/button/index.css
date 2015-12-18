@@ -8,13 +8,23 @@
   background-color: red;
   border: 1px solid transparent;
   border-radius: 2px;
+  box-shadow: 0 0 0 rgba(#000, 0);
+  color: inherit;
   font-size: 0.75rem;
   font-weight: bold;
   line-height: 1;
   margin: 0.25rem;
   padding: 1rem 1.5rem;
+  text-decoration: none;
   text-transform: uppercase;
+  transition: all 200ms ease-in;
   vertical-align: baseline;
+  width: 100%;
+}
+
+.Button:hover {
+  box-shadow: 0 0 0 rgba(#000, 0.25);
+  transition: all 200ms ease-in;
 }
 
 .Button--primary {
