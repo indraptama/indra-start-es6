@@ -35,7 +35,6 @@ import mqPacker from 'css-mqpacker';
 import nested from 'postcss-nested';
 import resType from 'postcss-responsive-type';
 
-
 const paths = {
   bundle: 'app.js',
   srcJSX: 'src/index.js',
@@ -51,6 +50,14 @@ const paths = {
   distCSS: 'dist/css',
   distImg: 'dist/img',
 };
+
+const customOpts = {
+  entries: [paths.srcJsx],
+  debug: true,
+};
+
+const opts = Object.assign({}, watchify.args, customOpts);
+
 
 // HTML TASK
 
@@ -95,27 +102,31 @@ gulp.task('styles', () => {
 
 // JS Task
 gulp.task('watchify', () => {
-  const bundler = watchify(browserify(paths.srcJSX, watchify.args));
+  let bundler = watchify(browserify(opts));
+
   function rebundle() {
-    return bundler
-      .bundle()
-      .on('error', notify.onError())
-      .pipe(source(paths.bundle))
-      .pipe(gulp.dest(paths.distJS))
-      .pipe(reload({ stream: true }));
+    return bundler.bundle()
+    .on('error', notify.onError())
+    .pipe(source(paths.bundle))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.distJS))
+    .pipe(reload({ stream: true }));
   }
-  bundler.transform(babelify, { presets: ['es2015', 'react'] })
+
+  bundler.transform(babelify)
   .on('update', rebundle);
   return rebundle();
 });
 
 gulp.task('browserify', () => {
-  browserify(paths.srcJSX)
-  .transform(babelify, { presets: ['es2015', 'react'] })
+  browserify(paths.srcJsx, { debug: true })
+  .transform(babelify)
   .bundle()
   .pipe(source(paths.bundle))
   .pipe(buffer())
-  .pipe(sourcemaps.init())
+  .pipe(sourcemaps.init({ loadMaps: true }))
   .pipe(uglify())
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(paths.distJS));
