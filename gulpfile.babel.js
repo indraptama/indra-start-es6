@@ -15,7 +15,7 @@ import uglify from 'gulp-uglify';
 
 // HTML
 import jade from 'gulp-jade';
-import gDATA from 'gulp-data';
+// import gDATA from 'gulp-data';
 
 // Post CSS
 import postcss from 'gulp-postcss'; // Main Plugins
@@ -26,7 +26,7 @@ import Calc from 'postcss-calc';
 import cssFocus from 'postcss-focus';
 import cssImport from 'postcss-import';
 import cssMedia from 'postcss-custom-media';
-import cssnano from 'cssnano';
+// import cssnano from 'cssnano';
 import cssReport from 'postcss-reporter';
 import extend from 'postcss-simple-extend';
 import hexA from 'postcss-hexrgba';
@@ -52,7 +52,7 @@ const paths = {
 };
 
 const customOpts = {
-  entries: [paths.srcJsx],
+  entries: [paths.srcJSX],
   debug: true,
 };
 
@@ -102,7 +102,7 @@ gulp.task('styles', () => {
 
 // JS Task
 gulp.task('watchify', () => {
-  let bundler = watchify(browserify(opts));
+  const bundler = watchify(browserify(opts));
 
   function rebundle() {
     return bundler.bundle()
@@ -121,7 +121,7 @@ gulp.task('watchify', () => {
 });
 
 gulp.task('browserify', () => {
-  browserify(paths.srcJsx, { debug: true })
+  browserify(paths.srcJSX, { debug: true })
   .transform(babelify)
   .bundle()
   .pipe(source(paths.bundle))
@@ -176,5 +176,15 @@ gulp.task('clean', cb => {
 });
 
 gulp.task('default', cb => {
+  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint'], cb);
+});
+
+
+gulp.task('watch', cb => {
   runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'html', 'copies'], cb);
+});
+
+gulp.task('build', cb => {
+  process.env.NODE_ENV = 'production';
+  runSequence('clean', ['browserify', 'styles', 'html', 'copies'], cb);
 });

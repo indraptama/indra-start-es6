@@ -1,6 +1,3 @@
-@import "suitcss-base";
-@import "suitcss-components-button";
-
 /** @define Button; use strict */
 
 :root {
@@ -23,12 +20,4 @@
 .Button--primary {
   background-color: var(--button-primary-color);
   color: rgba(#fff, 0.87);
-}
-
-.alpha {
-  margin: 5px;
-}
-
-.Button-PreSet {
-  margin-left: 50px;
 }
