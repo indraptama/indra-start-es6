@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from './button/index.jsx';
+import Button from './Button/Button.jsx';
 
 const style = cssInJS({
   Card: {
@@ -17,10 +17,10 @@ const style = cssInJS({
   },
 });
 
-const Card = () => (
+const Card = (name) => (
   <div className={style.Card}>
     <h1>this card created with react</h1>
-    <Button name={this.props.name}/>
+    <Button name="test"/>
   </div>
 );
 

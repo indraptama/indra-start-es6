@@ -11,7 +11,7 @@ import source from 'vinyl-source-stream';
 import sourcemaps from 'gulp-sourcemaps';
 import watchify from 'watchify';
 import uglify from 'gulp-uglify';
-
+import riotify from 'riotify';
 
 // HTML
 import jade from 'gulp-jade';
@@ -55,7 +55,6 @@ const customOpts = {
   entries: [paths.srcJSX],
   debug: true,
 };
-
 const opts = Object.assign({}, watchify.args, customOpts);
 
 
@@ -114,7 +113,6 @@ gulp.task('watchify', () => {
     .pipe(gulp.dest(paths.distJS))
     .pipe(reload({ stream: true }));
   }
-
   bundler.transform(babelify)
   .on('update', rebundle);
   return rebundle();
@@ -131,6 +129,39 @@ gulp.task('browserify', () => {
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(paths.distJS));
 });
+
+
+// RIOT.JS Task
+gulp.task('watchifyRiot', () => {
+  const bundler = watchify(browserify(opts));
+
+  function rebundle() {
+    return bundler.bundle()
+    .on('error', notify.onError())
+    .pipe(source(paths.bundle))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.distJS))
+    .pipe(reload({ stream: true }));
+  }
+  bundler.transform(riotify, { type: 'babel' })
+  .on('update', rebundle);
+  return rebundle();
+});
+
+gulp.task('browserifyRiot', () => {
+  browserify(paths.srcJSX, { debug: true })
+  .transform(babelify)
+  .bundle()
+  .pipe(source(paths.bundle))
+  .pipe(buffer())
+  .pipe(sourcemaps.init({ loadMaps: true }))
+  .pipe(uglify())
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest(paths.distJS));
+});
+
 
 // browserSync
 gulp.task('browserSync', () => {
@@ -184,6 +215,11 @@ gulp.task('default', cb => {
 gulp.task('watch', cb => {
   runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'html', 'copies'], cb);
 });
+
+gulp.task('watchRiot', cb => {
+  runSequence('clean', ['browserSync', 'watchTask', 'watchifyRiot', 'styles', 'lint', 'html', 'copies'], cb);
+});
+
 
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
