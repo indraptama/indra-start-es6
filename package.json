@@ -71,6 +71,6 @@
     "react-dom": "^0.14.3",
     "react-router": "^1.0.2",
     "suitcss": "^0.8.0",
-    "superagent": "^1.6.1"
+    "superagent": "^1.6.1" 
   }
 }
